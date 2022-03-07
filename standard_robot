@@ -1,0 +1,60 @@
+import sys
+from irobotq_robotdriver import *
+
+system = 100
+speed = system
+height = get_height(37)
+
+def f_break():
+    for i in range(50):
+        stop_all_motor()
+        tanshe(120,4000,121,4000,122,5000,123,5000)
+
+def f_drive():
+    tanshe(120,5000,121,5000,122,5000,123,5000)
+    rate=get_dist(32)/900*10+10
+    spdiff=int(abs(get_dist(31)-get_dist(33))/rate)
+    if spdiff>speed:
+        spdiff=speed
+    if get_dist(33)>get_dist(31):
+        set_motors(1,speed,2,speed,3,speed-spdiff,4,speed-spdiff)
+    else:
+        set_motors(3,speed,4,speed,1,speed-spdiff,2,speed-spdiff)
+
+def f_flycar():
+    if(get_gray(38)==48 and get_gray(39)==48)and get_dist(32)<500:
+        set_motors(1,100,2,100,3,100,4,100)
+        sleep(200)
+
+def f_wait():
+    pass
+
+def f_crossroad():
+    pass
+
+def f_leavecrossroad():
+    pass
+
+def f_turnner(dir):
+    pass
+
+def main():
+    while True:
+        f_drive()
+
+if __name__ == '__main__':
+
+    try:
+        ret=robot_drv.init(sys.argv[1],sys.argv[2],int(sys.argv[3]))
+        if(ret == 0):
+            main()
+            over()
+            print("机器人程序运行结束")
+        else:
+            print('初始化错误，错误码:%d' % ret)
+        print('按任意键退出')
+        v=input()
+    except Exception as e:
+        print (e)
+        print('按任意键退出')
+        v=input()
