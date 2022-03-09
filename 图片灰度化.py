@@ -1,7 +1,9 @@
 from PIL import Image
 
-f = open("1.txt", 'w+')  
-im = Image.open("C:\\Users\\PC181221\\Desktop\\图片处理\\1.png")
+input("it will open the picture.png are you sure about it?")
+
+f = open("out_put.txt", 'w+')  
+im = Image.open("picture.png")
 img = im.convert('L')
 for i in range(10):
 	for j in range(10):
