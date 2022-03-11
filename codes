@@ -110,7 +110,7 @@ def f_leave_crossroads(time):	#离开路口
 			speed=system
 		f_drive()
 		f_flycar()
-		#f_snake()
+		f_snake()
 def f_turner(dir):	#路口旋转，-1为左，0为直行，1为右
 	if dir==0:
 		robot_drv.set_motors(1,35,2,35,3,35,4,35)
