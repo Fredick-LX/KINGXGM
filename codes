@@ -2,69 +2,23 @@
 #'作者:tjbxs003'
 #'日期:2022年03月07日 12:59:46'
 #
-system = 100
+system = int(input())
 speed = system
-
-"""def f_snake():	#窄路曲行
-	if robot_drv.get_gray(GB)!=153 and (robot_drv.get_gray(GL)==153 or robot_drv.get_gray(GR)==153):
-		f_break()
-		robot_drv.set_motors(1,15,2,15,3,15,4,15)
-		robot_drv.sleep(150)
-	while robot_drv.get_height(H)>(height+5) and (robot_drv.get_gray(GL)==153 or robot_drv.get_gray(GR)==153):
-		robot_drv.tanshe(120,1000,121,1000,122,1000,123,1000)
-		if robot_drv.get_gray(GL)!=153:
-			robot_drv.set_motors(1,16,2,16,3,-16,4,-16)
-		elif robot_drv.get_gray(GR)!=153:
-			robot_drv.set_motors(1,-16,2,-16,3,16,4,16)
+height=35
+def tanshe_zou(time,lsp,rsp):
+    robot_drv.start_time()
+    while robot_drv.get_time()<time:
+        robot_drv.tanshe(120,5000,121,5000,122,5000,123,5000)
+        robot_drv.set_motors(1,lsp,2,lsp,3,rsp,4,rsp)
+def f_snake():	#窄路曲行
+	while robot_drv.get_height(37)>(height+5) and (robot_drv.get_gray(38)==153 or robot_drv.get_gray(39)==153):
+		robot_drv.tanshe(120,5000,121,5000,122,5000,123,5000)
+		if robot_drv.get_gray(38)!=153:
+			robot_drv.set_motors(1,20,2,20,3,-20,4,-20)
+		elif robot_drv.get_gray(39)!=153:
+			robot_drv.set_motors(1,-20,2,-20,3,20,4,20)
 		else:
-			robot_drv.set_motors(1,25,2,25,3,25,4,25)"""
-def f_leave_crossroads(time):	#离开路口
-	robot_drv.start_time()
-	while robot_drv.get_time()<time:
-		if robot_drv.get_light_signal(34)>2:
-			speed=30
-			break
-		else:
-			speed=system
-		f_drive()
-		f_flycar()
-		#f_snake()
-def f_turner(dir):	#路口旋转，-1为左，0为直行，1为右
-	if dir==0:
-		robot_drv.set_motors(1,35,2,35,3,35,4,35)
-		robot_drv.sleep(400)
-		f_leave_crossroads(1200)
-	else:
-		robot_drv.set_motors(1,35,2,35,3,35,4,35)
-		robot_drv.sleep(50)
-		robot_drv.set_motors(1,dir*15,2,dir*15,3,-dir*15,4,-dir*15)
-		robot_drv.sleep(340)
-		while robot_drv.get_dist(32)<1000:
-			robot_drv.set_motors(1,dir*15,2,dir*15,3,-dir*15,4,-dir*15)
-		stop_all_motors()
-		f_leave_crossroads(1200)
-def f_wait():	#路口可能见到行人，停一下
-	while get_lighten_signal(34)>2:
-		stop_all_motors()
-		if robot_drv.get_gray(38)!=255 or robot_drv.get_gray(39)!=255:
-			f_crossroads()
-
-def f_crossroads():
-    while robot_drv.get_gray(38)!=255 or robot_drv.get_gray(39)!=255:
-        if robot_drv.get_light_signal(34)>2:
-            speed=30
-        else:
-            speed=system
-        f_drive()
-        f_flycar()
-        #f_snake()
-    f_break()
-    f_wait()
-def f_roads(dirs):	#整合，走所有路
-	for i in dirs:
-		f_crossroads()
-		f_turn(i)
-		print("road end direction is",i)	#路走完吱一声
+			robot_drv.set_motors(1,20,2,20,3,20,4,20)
 
 def f_break():
     for i in range(50):
@@ -75,6 +29,10 @@ def f_drive():
     robot_drv.tanshe(120,5000,121,5000,122,5000,123,5000)
     rate=robot_drv.get_dist(32)/900*10+10
     spdiff=int(abs(robot_drv.get_dist(31)-robot_drv.get_dist(33))/rate)
+    if robot_drv.get_light_signal(34)>2:
+        speed=30
+    else:
+        speed = system
     if spdiff>speed:
         spdiff=speed
     if robot_drv.get_dist(33)>robot_drv.get_dist(31):
@@ -82,52 +40,38 @@ def f_drive():
     else:
         robot_drv.set_motors(3,speed,4,speed,1,speed-spdiff,2,speed-spdiff)
 
-def f_flycar():
-    if(robot_drv.get_gray(38)==48 and robot_drv.get_gray(39)==48)and robot_drv.get_dist(32)<500:
-        robot_drv.set_motors(1,100,2,100,3,100,4,100)
-        robot_drv.sleep(225)
+def f_flycar(speed=70):
+    if(robot_drv.get_gray(38)==48 and robot_drv.get_gray(39)==48)and robot_drv.get_height(37)==height+5:
+        robot_drv.set_motors(1,speed,2,speed,3,speed,4,speed)
+        robot_drv.sleep(300)
 
-def f_snake():	#窄路曲行
-	if robot_drv.get_gray(GB)!=153 and (robot_drv.get_gray(GL)==153 or robot_drv.get_gray(GR)==153):
-		f_break()
-		robot_drv.set_motors(1,15,2,15,3,15,4,15)
-		robot_drv.sleep(150)
-	while robot_drv.get_height(H)>(height+5) and (robot_drv.get_gray(GL)==153 or robot_drv.get_gray(GR)==153):
-		robot_drv.tanshe(120,1000,121,1000,122,1000,123,1000)
-		if robot_drv.get_gray(GL)!=153:
-			robot_drv.set_motors(1,16,2,16,3,-16,4,-16)
-		elif robot_drv.get_gray(GR)!=153:
-			robot_drv.set_motors(1,-16,2,-16,3,16,4,16)
-		else:
-			robot_drv.set_motors(1,25,2,25,3,25,4,25)
 def f_leave_crossroads(time):	#离开路口
-	robot_drv.start_time()
-	while robot_drv.get_time()<time:
-		if robot_drv.get_light_signal(R)>2:
-			speed=30
-			break
-		else:
-			speed=system
-		f_drive()
-		f_flycar()
-		f_snake()
+    robot_drv.start_time()
+    while robot_drv.get_time()<time:
+        robot_drv.tanshe(120,5000,121,5000,122,5000,123,5000)
+        if robot_drv.get_light_signal(34)>2:
+            speed=30
+            break
+        else:
+            speed=system
+        f_drive()
+        f_flycar()
+        f_snake()
 def f_turner(dir):	#路口旋转，-1为左，0为直行，1为右
-	if dir==0:
-		robot_drv.set_motors(1,35,2,35,3,35,4,35)
-		robot_drv.sleep(400)
-		f_leave_crossroads(1200)
-	else:
-		robot_drv.set_motors(1,35,2,35,3,35,4,35)
-		robot_drv.sleep(50)
-		robot_drv.set_motors(1,dir*15,2,dir*15,3,-dir*15,4,-dir*15)
-		robot_drv.sleep(340)
-		while robot_drv.get_dist(DM)<1000:
-			robot_drv.set_motors(1,dir*15,2,dir*15,3,-dir*15,4,-dir*15)
-		stop_all_motors()
-		f_leave_crossroads(1200)
+    if dir==0:
+        tanshe_zou(600,35,35)
+        f_leave_crossroads(1200)
+    else:
+        tanshe_zou(600,35,35)
+        robot_drv.set_motors(1,dir*10,2,dir*10,3,-dir*10,4,-dir*10)
+        robot_drv.sleep(340)
+        while robot_drv.get_dist(32)<1500:
+            robot_drv.set_motors(1,dir*10,2,dir*10,3,-dir*10,4,-dir*10)
+        robot_drv.stop_all_motor()
+        f_leave_crossroads(1200)
 def f_wait():	#路口可能见到行人，停一下
-	while get_lighten_signal(34)>2:
-		stop_all_motors()
+	while  robot_drv.get_light_signal(34)>2:
+		robot_drv.stop_all_motor()
 		if robot_drv.get_gray(38)!=255 or robot_drv.get_gray(39)!=255:
 			f_crossroads()
 def f_crossroads():
@@ -138,16 +82,16 @@ def f_crossroads():
             speed=system
         f_drive()
         f_flycar()
-        #f_snake()
+        f_snake()
     f_break()
     f_wait()
 def f_roads(dirs):	#整合，走所有路
 	for i in dirs:
 		f_crossroads()
-		f_turn(i)
+		f_turner(i)
 		print("road_end direction is",i)	#路走完吱一声
 def main():
-    f_roads([1,0,0])
+    f_roads([-1,0,0,1,-1])
 # *********************************************
 # 以下为初始化代码,请不要修改或者删除
 # *********************************************
