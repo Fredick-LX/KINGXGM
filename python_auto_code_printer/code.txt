@@ -1,0 +1,46 @@
+# -*- coding: utf-8 -*-
+import os
+try:
+    from PIL import Image
+except:
+    print("未安装PIL,已为您自动安装,请等待>>>")
+    os.system("pip install pillow")
+    from PIL import Image
+try:
+    import numpy as np
+except:
+    print("未安装numpy,已为您自动安装,请等待>>>")
+    os.system("pip install numpy")
+    import numpy as np
+
+global iner
+iner= []
+
+def main():
+    img_n = Image.open('IN.png').convert("L")
+    img = np.array(img_n)
+    x,y = img.shape
+    w = img_n.width
+    h = img_n.height
+    for i in range(x):
+        for j in range(y):
+            r = img[i,j]
+            if r <= gray:
+                iner.append(1)
+            else:
+                iner.append(0)
+        iner.append(2)
+    return w*h
+global gray
+gray = int(input("转变灰度为:?\n"))
+main()
+s = ""
+for i in range(main()-1):
+    k = iner[i]
+    if k ==0:
+        s+="  "
+    elif k ==1:
+        s+="■"
+    else:
+        s+="\n"
+print(s)
