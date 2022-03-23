@@ -20,7 +20,7 @@ import DefaultSubs, Utils
 from AimlParser import create_parser
 from PatternMgr import PatternMgr
 from WordSub import WordSub
-
+#输出LOADING在216行
 def msg_encoder( encoding=None ):
     """  返回一个 with a pair of functions to encode/decode 消息  的命名元组。
     如果 encoding 为None , 将返回 a pass through function 。    """
@@ -37,7 +37,7 @@ class Kernel:
     # module constants
     _globalSessionID = "_global" # 全局会话的key  (duh)
     _maxHistorySize = 10 # _inputs 与 _responses列表的最大长度。能记忆最近多少个问答对。
-    _maxRecursionDepth = 100 # 在响应中止之前 <srai>/<sr> 标签允许的最大递归深度
+    _maxRecursionDepth = 200 # 在响应中止之前 <srai>/<sr> 标签允许的最大递归深度
     # special predicate keys 特殊的谓词键
     _inputHistory = "_inputHistory"     # 最近用户输入queue (list) 的 keys
     _outputHistory = "_outputHistory"   # 最近响应 queue (list) 的 keys
@@ -170,10 +170,10 @@ class Kernel:
     def saveBrain(self, filename):
         """将bot的大脑内容转储到磁盘上的文件中。"""
         if self._verboseMode: print( "Saving brain to %s..." % filename, end="")
-        start = time.clock()
+        start = time.process_time()
         self._brain.save(filename)
         if self._verboseMode:
-            print( "done (%.2f seconds)" % (time.clock() - start) )
+            print( "done (%.2f seconds)" % (time.process_time() - start) )
 
     def getPredicate(self, name, sessionID = _globalSessionID):
         """从指定的会话中检索谓词“名称”的当前值。
@@ -258,7 +258,7 @@ class Kernel:
         """加载并学习指定的AIML文件的内容。
     如果filename包含通配符，则所有匹配的文件都将被加载并学习。         """
         for f in glob.glob(filename):
-            if self._verboseMode: print( "Loading %s..." % f, end="")
+            if self._verboseMode: print( "Loading %s..." % f)
             #start = time.process_time()
             # 加载并解析 AIML 文件.
             parser = create_parser()
@@ -500,8 +500,7 @@ class Kernel:
     def _processFormal(self, elem, sessionID):
         """Process a <formal> AIML element.
 
-        <formal> elements process their contents recursively, and then
-        capitalize the first letter of each word of the result.
+       <formal>元素递归地处理其内容，然后将结果每个单词的第一个字母大写。
 
         """                
         response = ""
@@ -513,9 +512,7 @@ class Kernel:
     def _processGender(self,elem, sessionID):
         """Process a <gender> AIML element.
 
-        <gender> elements process their contents, and then swap the
-        gender of any third-person singular pronouns in the result.
-        This subsitution is handled by the aiml.WordSub module.
+        <gender>元素处理其内容，然后交换结果中任何第三人称单数代词的性别。该补贴由aiml负责。WordSub模块。
 
         """
         response = ""
@@ -528,13 +525,8 @@ class Kernel:
         """Process a <get> AIML element.
 
         必要元素属性:
-            name: The name of the predicate whose value should be
-            retrieved from the specified session and returned.  If the
-            predicate doesn't exist, the empty string is returned.
-
-        <get> elements return the value of a predicate from the
-        specified session.
-
+        name：其值应为的谓词的名称从指定的会话中检索并返回。如果谓词不存在，返回空字符串。
+        <get>元素从指定的会话。
         """
         return self.getPredicate(elem[1]['name'], sessionID)
 
@@ -567,12 +559,8 @@ class Kernel:
         """处理<input> AIML 元素。
 
         可选属性元素:
-            index: The index of the element from the history list to
-            return. 1 means the most recent item, 2 means the one
-            before that, and so on.
-
-        <input> elements return an entry from the input history for
-        the current session.
+        索引：从历史记录列表到的元素的索引回来1表示最近的项目，2表示最近的项目在此之前，等等。
+        <input>元素从输入历史中返回本届会议。
 
         """        
         inputHistory = self.getPredicate(self._inputHistory, sessionID)
@@ -589,12 +577,8 @@ class Kernel:
     def _processJavascript(self, elem, sessionID):
         """处理 <javascript> AIML 元素。
 
-        <javascript> elements process their contents recursively, and
-        then run the results through a server-side Javascript
-        interpreter to compute the final response.  Implementations
-        are not required to provide an actual Javascript interpreter,
-        and right now PyAIML doesn't; <javascript> elements are behave
-        exactly like <think> elements.
+<javascript>元素递归地处理其内容然后通过服务器端Javascript运行结果解释器来计算最终的响应。
+启动位置不需要提供实际的Javascript解释器，而现在PyAIML没有<javascript>元素的行为就像<think>元素一样。
 
         """        
         return self._processThink(elem, sessionID)
@@ -603,8 +587,7 @@ class Kernel:
     def _processLearn(self, elem, sessionID):
         """处理<learn> AIML 元素。.
 
-        <learn> elements process their contents recursively, and then
-        treat the result as an AIML file to open and learn.
+        <learn>元素递归地处理其内容，然后将结果作为AIML文件来打开和学习。
 
         """
         filename = ""
@@ -618,14 +601,9 @@ class Kernel:
         """Process an <li> AIML element.
 
         可选属性元素:
-            name: the name of a predicate to query.
-            value: the value to check that predicate for.
+        name：要查询的谓词的名称。value：检查该谓词的值。
 
-        <li> elements process their contents recursively and return
-        the results. They can only appear inside <condition> and
-        <random> elements.  See _processCondition() and
-        _processRandom() for details of their usage.
- 
+        <li>元素递归地处理其内容并返回结果。它们只能出现在<condition>和<random>元素。请参见_processCondition（）和_processRandom（）获取其用法的详细信息。
         """
         response = ""
         for e in elem[2:]:
@@ -648,14 +626,12 @@ class Kernel:
     # <person>
     def _processPerson(self,elem, sessionID):
         """处理 <person> AIML 元素。
+<person>元素递归地处理其内容，然后
+将结果中的所有代词从第一人称转换为第二人称
+人，反之亦然。这种补贴由
+艾米尔。WordSub模块。
 
-        <person> elements process their contents recursively, and then
-        convert all pronouns in the results from 1st person to 2nd
-        person, and vice versa.  This subsitution is handled by the
-        aiml.WordSub module.
-
-        If the <person> tag is used atomically (e.g. <person/>), it is
-        a shortcut for <person><star/></person>.
+如果<person>标签是原子式使用的（例如<person/>），则它是<person><star/></person>的快捷方式。
 
         """
         response = ""
@@ -669,14 +645,9 @@ class Kernel:
     def _processPerson2(self,elem, sessionID):
         """处理 <person2> AIML 元素。
 
-        <person2> elements process their contents recursively, and then
-        convert all pronouns in the results from 1st person to 3rd
-        person, and vice versa.  This subsitution is handled by the
-        aiml.WordSub module.
+<person2>元素递归地处理其内容，然后将结果中的所有代词从第一人称转换为第三人称人，反之亦然。这种补贴由艾米尔。WordSub模块。
 
-        If the <person2> tag is used atomically (e.g. <person2/>), it is
-        a shortcut for <person2><star/></person2>.
-
+如果<person2>标签是原子式使用的（例如<person2/>），它是<person2><star/></person2>的快捷方式。
         """
         response = ""
         for e in elem[2:]:
@@ -688,10 +659,9 @@ class Kernel:
     # <random>
     def _processRandom(self, elem, sessionID):
         """处理 <random> AIML 元素。
-
-        <random> 元素包含0到多个 <li> 元素。  如果没有 , 回返回空字符串。
-        如果出现一个或多个 <li> 元素， 随机选取其中一个  processed recursively and have its results returned.
-         只有选定的 <li> 元素内容会被处理。 任何非-<li> 元素的内容都会被忽略。        """
+        <random> 元素包含0到多个 <li> 元素.如果没有,回返回空字符串.
+        如果出现一个或多个 <li> 元素,随机选取其中一个递归处理并返回其结果.
+         只有选定的 <li> 元素内容会被处理.任何非-<li> 元素的内容都会被忽略.        """
         listitems = []
         for e in elem[2:]:
             if e[0] == 'li':
@@ -707,8 +677,7 @@ class Kernel:
     def _processSentence(self,elem, sessionID):
         """Process a <sentence> AIML element.
 
-        <sentence> elements process their contents recursively, and
-        then capitalize the first letter of the results.
+        <sentence> 元素递归地处理其内容然后将结果的第一个字母大写.
 
         """
         response = ""
@@ -728,11 +697,7 @@ class Kernel:
         """Process a <set> AIML element.
 
         必要元素属性::
-            name: The name of the predicate to set.
-
-        <set> elements process their contents recursively, and assign the results to a predicate
-        (given by their 'name' attribute) in the current session.  The contents of the element
-        are also returned.
+            name：要设置的谓词的名称.<set>元素递归地处理其内容,并将结果分配给谓词(由其'name'属性提供)在当前会话中.元素的内容也会被退回.
 
         """
         value = ""
@@ -746,8 +711,7 @@ class Kernel:
     def _processSize(self,elem, sessionID):
         """Process a <size> AIML element.
 
-        <size> elements return the number of AIML categories currently
-        in the bot's brain.
+        <size> 元素返回当前AIML类别的数量在机器人的大脑里.
 
         """        
         return str(self.numCategories())
@@ -755,8 +719,7 @@ class Kernel:
     # <sr>
     def _processSr(self,elem,sessionID):
         """Process an <sr> AIML element.
-
-        <sr> elements are shortcuts for <srai><star/></srai>.
+        <sr>元素是<srai><star/></srai>的快捷方式.
 
         """
         star = self._processElement(['star',{}], sessionID)
@@ -767,11 +730,7 @@ class Kernel:
     def _processSrai(self,elem, sessionID):
         """Process a <srai> AIML element.
 
-        <srai> elements recursively process their contents, and then
-        pass the results right back into the AIML interpreter as a new
-        piece of input.  The results of this new input string are
-        returned.
-
+        <srai>元素递归地处理其内容,然后将结果作为一个新的文件传递回AIML解释器一个输入.这个新输入字符串的结果如下返回.
         """
         newInput = ""
         for e in elem[2:]:
@@ -783,15 +742,9 @@ class Kernel:
     def _processStar(self, elem, sessionID):
         """Process a <star> AIML element.
 
-        可选元素属性:
-            index: Which "*" character in the current pattern should
-            be matched?
-
-        <star> elements return the text fragment matched by the "*"
-        character in the current input pattern.  For example, if the
-        input "Hello Tom Smith, how are you?" matched the pattern
-        "HELLO * HOW ARE YOU", then a <star> element in the template
-        would evaluate to "Tom Smith".
+        可选元素属性:索引：当前模式中应该使用哪个“*”字符匹配吗？
+        <star>元素返回与“*”匹配的文本片段当前输入模式中的字符.例如,如果输入'你好,汤姆·史密斯,你好吗?'符合模式'你好,你好吗',
+        然后是模板中的<star>元素将评估为“汤姆·史密斯”。
 
         """
         try: index = int(elem[1]['index'])
@@ -853,11 +806,7 @@ class Kernel:
     # <template>
     def _processTemplate(self,elem, sessionID):
         """Process a <template> AIML element.
-
-        <template> elements recursively process their contents, and
-        return the results.  <template> is the root node of any AIML
-        response tree.
-
+        <template>元素递归地处理其内容返回结果<template>是任何AIML的根节点响应树。
         """
         response = ""
         for e in elem[2:]:
@@ -894,13 +843,9 @@ class Kernel:
         """处理 <that> AIML 元素。
 
         可选元素属性:
-            index: Specifies which element from the output history to
-            return.  1 is the most recent response, 2 is the next most
-            recent, and so on.
+        索引：指定要从输出历史记录中删除的元素回来1是最新的回复，2是第二个最新的回复最近，等等。
 
-        <that> elements (when they appear inside <template> elements)
-        are the output equivilant of <input> elements; they return one
-        of the Kernel's previous responses.
+        <that>元素（当它们出现在<template>元素中时）是<input>元素的输出等价物；他们还了一个内核以前的响应。
 
         """
         outputHistory = self.getPredicate(self._outputHistory, sessionID)
@@ -925,13 +870,10 @@ class Kernel:
         """处理 <thatstar> AIML 元素。
 
         可选元素属性:
-            index: Specifies which "*" in the <that> pattern to match.
+        索引：指定<that>模式中要匹配的“*”。
 
-        <thatstar> elements are similar to <star> elements, except
-        that where <star/> returns the portion of the input string
-        matched by a "*" character in the pattern, <thatstar/> returns
-        the portion of the previous input string that was matched by a
-        "*" in the current category's <that> pattern.
+        <thatstar>元素与<star>元素类似，除了其中<star/>返回输入字符串的部分由模式中的“*”字符匹配，<thatstar/>返回前一个输入字符串中由
+        当前类别的<that>模式中的“*”。
 
         """
         try: index = int(elem[1]['index'])
@@ -951,10 +893,10 @@ class Kernel:
     def _processThink(self,elem, sessionID):
         """处理 <think> AIML 元素.
 
-        <think> 元素处理 their contents recursively, and then
-        discard the results and return the empty string.  They're
-        useful for setting predicates and learning AIML files without
-        generating any output.        """
+        <think>元素处理 它们的内容是递归的，然后
+        放弃结果并返回空字符串。他们是
+        用于设置谓词和学习AIML文件，无需
+        生成任何输出。"""
         for e in elem[2:]:
             self._processElement(e, sessionID)
         return ""
