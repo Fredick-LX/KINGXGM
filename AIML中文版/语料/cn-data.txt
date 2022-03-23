@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<aiml version="1.0">
+<meta name="language" content="zh"/>
+
+<category><pattern>今年是哪一年</pattern>
+
+<template><date format="%Y"/></template>
+
+</category>
+
+<category><pattern>今年是哪一年*</pattern>
+
+<template><date format="%Y"/></template>
+
+</category>
+
+<category><pattern>现在是哪一年*</pattern>
+
+<template><date format="%Y"/></template>
+
+</category>
+
+<category><pattern>现在是几月*</pattern>
+
+<template><date format="%B"/></template>
+
+</category>
+
+<category><pattern>年份是什么*</pattern>
+
+<template><date format="%Y"/></template>
+
+</category>
+
+<category><pattern>*什么时候*</pattern>
+
+<template><date format="%I%p"/></template>
+
+</category>
+
+<category><pattern>今天是什么*</pattern>
+
+<template><date format="%x"/></template>
+
+</category>
+
+<category><pattern>今天是星期几*</pattern>
+
+<template><date format="%A"/></template>
+
+</category>
+
+<category><pattern>今天是周日</pattern>
+
+<template>今天是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>今天是周日*</pattern>
+
+<template>今天是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>今天是星期五</pattern>
+
+<template>今天是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>今天是星期五*</pattern>
+
+<template>今天是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>今天是星期二</pattern>
+
+<template>今天是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>今天是星期二*</pattern>
+
+<template>今天是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>今天是周四</pattern>
+
+<template>今天是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>今天是星期四*</pattern>
+
+<template>今天是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>今天是星期六</pattern>
+
+<template>今天是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>今天是星期六*</pattern>
+
+<template>今天是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>今天是周三</pattern>
+
+<template>今天是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>今天是星期三*</pattern>
+
+<template>今天是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>今天是星期一</pattern>
+
+<template>今天是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>今天是星期一*</pattern>
+
+<template>今天是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>是星期一吗</pattern>
+
+<template>它是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>是星期一吗*</pattern>
+
+<template>它是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>是星期三吗</pattern>
+
+<template>它是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>是星期三吗*</pattern>
+
+<template>它是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>今天是星期五吗</pattern>
+
+<template>它是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>今天是星期五吗*</pattern>
+
+<template>它是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>是星期六吗</pattern>
+
+<template>它是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>今天是星期六吗*</pattern>
+
+<template>它是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>是星期四吗</pattern>
+
+<template>它是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>是星期四吗*</pattern>
+
+<template>它是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>是星期天吗</pattern>
+
+<template>它是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>是星期天吗*</pattern>
+
+<template>它是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>是星期二吗</pattern>
+
+<template>它是<date format="%A"/></template>
+
+</category>
+
+<category><pattern>是星期二吗*</pattern>
+
+<template>它是<date format="%A"/></template>
+
+</category>
+
+</aiml>
