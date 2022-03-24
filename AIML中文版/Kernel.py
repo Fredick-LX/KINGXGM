@@ -109,7 +109,7 @@ class Kernel:
 
         在执行任何学习或命令执行之前（但是在loadBrain处理之后），`chdir`参数会使其更改为该目录。
         返回后，当前目录将移回原来的位置。        """
-        start = time.clock()
+        start = time.process_time()
         if brainFile:
             self.loadBrain(brainFile)
 
@@ -135,7 +135,7 @@ class Kernel:
                 os.chdir( prev )
 
         if self._verboseMode:
-            print( "Kernel bootstrap completed in %.2f seconds" % (time.clock() - start) )
+            print( "Kernel bootstrap completed in %.2f seconds" % (time.process_time() - start) )
 
     def verbose(self, isVerbose = True):
         """启用/禁用详细输出模式。"""
@@ -161,10 +161,10 @@ class Kernel:
         """尝试从指定的文件名加载以前保存的“大脑”。
      注意：“大脑”的当前内容将被丢弃！         """
         if self._verboseMode: print( "Loading brain from %s..." % filename, end="" )
-        start = time.clock()
+        start = time.process_time()
         self._brain.restore(filename)
         if self._verboseMode:
-            end = time.clock() - start
+            end = time.process_time() - start
             print( "done (%d categories in %.2f seconds)" % (self._brain.numTemplates(), end) )
 
     def saveBrain(self, filename):
