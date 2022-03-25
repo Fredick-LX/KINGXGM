@@ -267,7 +267,8 @@ class Kernel:
             try: parser.parse(f)
             except xml.sax.SAXParseException as msg:
                 err = "\nFATAL PARSE ERROR in file %s:\n%s\n" % (f,msg)
-                sys.stderr.write(err)
+                #sys.stderr.write(err)
+                print("听不懂的话呢...")
                 continue
             # 在PatternMgr 中保存 pattern/template 对 .
             for key,tem in handler.categories.items():
@@ -336,7 +337,8 @@ class Kernel:
         if len(inputStack) > self._maxRecursionDepth:
             if self._verboseMode:
                 err = u"警告: 超过最大递归深度！ (input='%s')" % self._cod.enc(input_)
-                sys.stderr.write(err)
+                #sys.stderr.write(err)
+                print("想不出该说什么...")
             return u""
 
         # 将输入压入输入栈
@@ -362,7 +364,8 @@ class Kernel:
         if elem is None:
             if self._verboseMode:
                 err = "WARNING: No match found for input: %s\n" % self._cod.enc(input_)
-                sys.stderr.write(err)
+                #sys.stderr.write(err)
+                print("想不出该说什么...")
         else:
             # 将元素处理为响应字符串。
             response += self._processElement(elem, sessionID).strip()
