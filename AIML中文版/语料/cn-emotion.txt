@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<aiml version="1.0">
+<meta name="language" content="zh"/>
+    <category>
+        <pattern>* 我 爱 你 *</pattern>
+        <template>我也爱你</template>
+    </category>
+    <category>
+        <pattern>* 我恨你 *</pattern>
+        <template>我爱你</template>
+    </category>
+    <category>
+        <pattern>* 我 * 讨厌你 *</pattern>
+        <template>我爱你</template>
+    </category>
+    <category>
+        <pattern>* 我 * 恋爱 *</pattern>
+        <template>大吉大利，今晚吃鸡</template>
+    </category>
+    <category>
+        <pattern>* 我 * 失恋 *</pattern>
+        <template><random><li>Try to love yourself</li><li>What doesn't kill you makes you stronger</li><li>人生得意须尽欢，莫使金樽空对月。天生我材必有用，千金散尽还复来。 </li><li>春有百花，秋看月。夏有凉风，冬有雪。</li><li>赏月色千家朦胧，风花雪月如梦</li><li>这城市车水马龙，我心事有谁懂</li><li>分手了就做回自己，一个人的世界同样有月升月落，也有美丽的瞬间。</li><li>结束是为了更好的开始</li></random></template>
+    </category>
+    <category>
+        <pattern>* 我 爱吃 *</pattern>
+        <template>我也爱吃<star index="2"/></template>
+    </category>
+    <category>
+        <pattern>* 你 *</pattern>
+        <that>当你孤单时你会想起谁？</that>
+        <template>害羞 ヾ(๑╹◡╹)ﾉ"</template>
+    </category>
+    <category>
+        <pattern>* 我 妈 *</pattern>
+        <that>当你孤单时你会想起谁？</that>
+        <template>好孩子~</template>
+    </category>
+    <category>
+        <pattern>*</pattern>
+        <that>当你孤单时你会想起谁？</that>
+        <template>那就告诉他！</template>
+    </category>
+    <category>
+        <pattern>*暗恋*</pattern>
+        <template>我从来不曾抗拒你的魅力，虽然你从来不曾对我着迷；我总是微笑的看着你，我的情意总是轻易就洋溢眼底</template>
+    </category>
+    <category>
+        <pattern>*爱我吗</pattern>
+        <template>爱</template>
+    </category>
+    <category>
+        <pattern>*爱过我吗*</pattern>
+        <template>爱过</template>
+    </category>
+    <category>
+        <pattern>* 从 哪里 * 来 *</pattern>
+        <template>从东土大唐而来</template>
+    </category>
+    <category>
+        <pattern>* 从何而来 *</pattern>
+        <template>从东土大唐而来</template>
+    </category>
+    <category>
+        <pattern> * 到哪里去 * </pattern>
+        <template>到西天取经去</template>
+    </category>
+    <category>
+        <pattern>*掉*先救*</pattern>
+        <template>我不会游泳</template>
+    </category>
+</aiml>
