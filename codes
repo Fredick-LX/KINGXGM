@@ -2,31 +2,36 @@
 #'作者:tjbxs003'
 #'日期:2022年03月07日 12:59:46'
 #
-system = int(input())
+system = 100
 speed = system
-height=35
+height=49
 def tanshe_zou(time,lsp,rsp):
-    robot_drv.start_time()
-    while robot_drv.get_time()<time:
-        robot_drv.tanshe(120,5000,121,5000,122,5000,123,5000)
+    if time == 0:
+        robot_drv.tanshe(120,10000,121,10000)
         robot_drv.set_motors(1,lsp,2,lsp,3,rsp,4,rsp)
-def f_snake():	#窄路曲行
-	while robot_drv.get_height(37)>(height+5) and (robot_drv.get_gray(38)==153 or robot_drv.get_gray(39)==153):
-		robot_drv.tanshe(120,5000,121,5000,122,5000,123,5000)
-		if robot_drv.get_gray(38)!=153:
-			robot_drv.set_motors(1,20,2,20,3,-20,4,-20)
-		elif robot_drv.get_gray(39)!=153:
-			robot_drv.set_motors(1,-20,2,-20,3,20,4,20)
-		else:
-			robot_drv.set_motors(1,20,2,20,3,20,4,20)
+    else:
+        robot_drv.start_time()
+        while robot_drv.get_time()<time:
+            robot_drv.tanshe(120,7000,121,7000)
+            robot_drv.set_motors(1,lsp,2,lsp,3,rsp,4,rsp)
+
+def f_snake(fs=30,ts=5):	#窄路曲行
+    while robot_drv.get_height(37)>(height+12) and (robot_drv.get_gray(38)==153 or robot_drv.get_gray(39)==153):
+        robot_drv.tanshe(120,10000,121,10000)
+        if robot_drv.get_gray(38)!=153:
+            robot_drv.set_motors(1,ts,2,ts,3,-ts,4,-ts)
+        elif robot_drv.get_gray(39)!=153:
+            robot_drv.set_motors(1,-ts,2,-ts,3,ts,4,ts)
+        else:
+            robot_drv.set_motors(1,fs,2,fs,3,fs,4,fs)
 
 def f_break():
     for i in range(50):
         robot_drv.stop_all_motor()
-        robot_drv.tanshe(120,4000,121,4000,122,5000,123,5000)
+        robot_drv.tanshe(120,10000,121,9000)
 
 def f_drive():
-    robot_drv.tanshe(120,5000,121,5000,122,5000,123,5000)
+    robot_drv.tanshe(120,10000,121,10000)
     rate=robot_drv.get_dist(32)/900*10+10
     spdiff=int(abs(robot_drv.get_dist(31)-robot_drv.get_dist(33))/rate)
     if robot_drv.get_light_signal(34)>2:
@@ -40,15 +45,17 @@ def f_drive():
     else:
         robot_drv.set_motors(3,speed,4,speed,1,speed-spdiff,2,speed-spdiff)
 
-def f_flycar(speed=70):
-    if(robot_drv.get_gray(38)==48 and robot_drv.get_gray(39)==48)and robot_drv.get_height(37)==height+5:
+def f_flycar(speed=50):
+    if robot_drv.get_gray(38)==48 and robot_drv.get_gray(39)==48 and robot_drv.get_height(37)==height:
+        print("哼哼啊啊啊啊啊啊啊啊啊啊")
+
         robot_drv.set_motors(1,speed,2,speed,3,speed,4,speed)
-        robot_drv.sleep(300)
+        robot_drv.sleep(600)
 
 def f_leave_crossroads(time):	#离开路口
     robot_drv.start_time()
     while robot_drv.get_time()<time:
-        robot_drv.tanshe(120,5000,121,5000,122,5000,123,5000)
+        robot_drv.tanshe(120,10000,121,10000)
         if robot_drv.get_light_signal(34)>2:
             speed=30
             break
@@ -59,12 +66,11 @@ def f_leave_crossroads(time):	#离开路口
         f_snake()
 def f_turner(dir):	#路口旋转，-1为左，0为直行，1为右
     if dir==0:
-        tanshe_zou(600,35,35)
-        f_leave_crossroads(1200)
+        tanshe_zou(500,50,50)
+        f_leave_crossroads(600)
     else:
-        tanshe_zou(600,35,35)
-        robot_drv.set_motors(1,dir*10,2,dir*10,3,-dir*10,4,-dir*10)
-        robot_drv.sleep(340)
+        tanshe_zou(500,40,40)
+        tanshe_zou(400,dir*10,-dir*10)
         while robot_drv.get_dist(32)<1500:
             robot_drv.set_motors(1,dir*10,2,dir*10,3,-dir*10,4,-dir*10)
         robot_drv.stop_all_motor()
@@ -78,6 +84,8 @@ def f_crossroads():
     while robot_drv.get_gray(38)!=255 or robot_drv.get_gray(39)!=255:
         if robot_drv.get_light_signal(34)>2:
             speed=30
+        elif robot_drv.get_dist(35)<1000:
+            speed=5
         else:
             speed=system
         f_drive()
