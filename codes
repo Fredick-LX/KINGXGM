@@ -15,7 +15,7 @@ def tanshe_zou(time,lsp,rsp):
             robot_drv.tanshe(120,7000,121,7000)
             robot_drv.set_motors(1,lsp,2,lsp,3,rsp,4,rsp)
 
-def f_snake(fs=30,ts=10):	#窄路曲行
+def f_snake(fs=25,ts=10):	#窄路曲行
     while robot_drv.get_height(37)>(height+12) and (robot_drv.get_gray(38)==153 or robot_drv.get_gray(39)==153):
         robot_drv.tanshe(120,5000,121,5000)
         if robot_drv.get_gray(38)!=153:
